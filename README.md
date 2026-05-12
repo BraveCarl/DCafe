@@ -68,8 +68,8 @@ DCafe/
 
 ### Prerequisites
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download)
-- [Visual Studio 2022](https://visualstudio.microsoft.com/) with the **MAUI** workload installed
+- [.NET 9 SDK]
+- [Visual Studio 2026]with the **MAUI** workload installed
 - A Firebase project with Realtime Database enabled
 
 ### Installation
