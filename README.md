@@ -8,7 +8,7 @@ A mobile coffee shop ordering app built with **.NET MAUI**, designed for a smoot
 
 | Splash Screen | Home / Menu | Product Detail |
 |:---:|:---:|:---:|
-| ![Splash](./Screenshots/splash.png) | ![Menu](./Screenshots/menu.png) | ![Detail](./Screenshots/productdetail.png) |
+| ![Splash](src/Screenshots/splash.png) | ![Menu](src/Screenshots/menu.png) | ![Detail](src/Screenshots/productdetail.png) |
 
 ---
 
