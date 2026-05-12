@@ -2,6 +2,8 @@
 
 A mobile coffee shop ordering app built with **.NET MAUI**, designed for a smooth and elegant café experience on Android and iOS.
 
+Download APK here:
+https://drive.google.com/file/d/1ViKwonI3NL6K-aIx15HaxpKlCxli33WD/view?usp=sharing
 ---
 
 ## 📱 Screenshots
