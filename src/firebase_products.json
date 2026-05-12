@@ -1,0 +1,290 @@
+{
+  "1": {
+    "id": 1,
+    "title": "Espresso",
+    "category": "coffee",
+    "description": "Strong and bold single shot of pure espresso",
+    "image": "espresso.png",
+    "price": 90,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "2": {
+    "id": 2,
+    "title": "Americano",
+    "category": "coffee",
+    "description": "Espresso diluted with hot water for a smooth taste",
+    "image": "americano.png",
+    "price": 110,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "3": {
+    "id": 3,
+    "title": "Latte",
+    "category": "coffee",
+    "description": "Smooth espresso with steamed milk and light foam",
+    "image": "latte.png",
+    "price": 130,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "4": {
+    "id": 4,
+    "title": "Cappuccino",
+    "category": "coffee",
+    "description": "Rich espresso topped with creamy milk foam",
+    "image": "cappuccino.png",
+    "price": 120,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "5": {
+    "id": 5,
+    "title": "Flat White",
+    "category": "coffee",
+    "description": "Velvety steamed milk with a strong espresso base",
+    "image": "flat_white.png",
+    "price": 140,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "6": {
+    "id": 6,
+    "title": "Mocha",
+    "category": "coffee",
+    "description": "Espresso blended with rich chocolate and steamed milk",
+    "image": "mocha.png",
+    "price": 150,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "7": {
+    "id": 7,
+    "title": "Macchiato",
+    "category": "coffee",
+    "description": "Espresso marked with a dollop of foamed milk",
+    "image": "macchiato.png",
+    "price": 130,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "8": {
+    "id": 8,
+    "title": "Spanish Latte",
+    "category": "coffee",
+    "description": "Creamy espresso with condensed milk and steamed milk",
+    "image": "spanish_latte.png",
+    "price": 145,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "9": {
+    "id": 9,
+    "title": "Cold Brew",
+    "category": "coffee",
+    "description": "Slow-steeped cold coffee, smooth and low in acidity",
+    "image": "cold_brew.png",
+    "price": 150,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "10": {
+    "id": 10,
+    "title": "Iced Coffee",
+    "category": "coffee",
+    "description": "Classic chilled coffee served over ice",
+    "image": "iced_coffee.png",
+    "price": 110,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "11": {
+    "id": 11,
+    "title": "Iced Latte",
+    "category": "cold_brew",
+    "description": "Espresso and milk poured over ice for a refreshing sip",
+    "image": "iced_latte.png",
+    "price": 140,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "12": {
+    "id": 12,
+    "title": "Iced Americano",
+    "category": "cold_brew",
+    "description": "Bold espresso shots served chilled over ice",
+    "image": "iced_americano.png",
+    "price": 120,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "13": {
+    "id": 13,
+    "title": "Frappes / Blended Drinks",
+    "category": "cold_brew",
+    "description": "Blended iced coffee drinks topped with whipped cream",
+    "image": "frappe.png",
+    "price": 160,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "14": {
+    "id": 14,
+    "title": "Coffee Jelly Drinks",
+    "category": "cold_brew",
+    "description": "Iced coffee drink with chewy coffee jelly cubes",
+    "image": "coffee_jelly.png",
+    "price": 150,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "15": {
+    "id": 15,
+    "title": "Matcha Latte",
+    "category": "non_coffee",
+    "description": "Earthy Japanese matcha blended with creamy steamed milk",
+    "image": "matcha_latte.png",
+    "price": 145,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "16": {
+    "id": 16,
+    "title": "Hot Chocolate",
+    "category": "non_coffee",
+    "description": "Rich and creamy classic hot chocolate drink",
+    "image": "hot_chocolate.png",
+    "price": 120,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "17": {
+    "id": 17,
+    "title": "Milk Tea",
+    "category": "non_coffee",
+    "description": "Creamy milk tea with your choice of toppings",
+    "image": "milk_tea.png",
+    "price": 130,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "18": {
+    "id": 18,
+    "title": "Tea (Black, Green, Herbal)",
+    "category": "non_coffee",
+    "description": "Freshly brewed tea available in black, green, or herbal",
+    "image": "tea.png",
+    "price": 100,
+    "rating": { "rate": 3, "count": 0 }
+  },
+  "19": {
+    "id": 19,
+    "title": "Fresh Juices",
+    "category": "non_coffee",
+    "description": "Freshly squeezed seasonal fruit juices",
+    "image": "fresh_juice.png",
+    "price": 110,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "20": {
+    "id": 20,
+    "title": "Caramel Macchiato",
+    "category": "signature",
+    "description": "Layered espresso with vanilla, milk, and caramel drizzle",
+    "image": "caramel_macchiato.png",
+    "price": 160,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "21": {
+    "id": 21,
+    "title": "Hazelnut Latte",
+    "category": "signature",
+    "description": "Smooth latte infused with rich hazelnut syrup",
+    "image": "hazelnut_latte.png",
+    "price": 155,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "22": {
+    "id": 22,
+    "title": "Vanilla Latte",
+    "category": "signature",
+    "description": "Classic latte sweetened with pure vanilla syrup",
+    "image": "vanilla_latte.png",
+    "price": 150,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "23": {
+    "id": 23,
+    "title": "Seasonal Drinks",
+    "category": "signature",
+    "description": "Limited edition drinks inspired by the current season",
+    "image": "seasonal_drinks.png",
+    "price": 165,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "24": {
+    "id": 24,
+    "title": "Croissant",
+    "category": "desserts",
+    "description": "Buttery and flaky golden croissant freshly baked",
+    "image": "croissant.png",
+    "price": 90,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "25": {
+    "id": 25,
+    "title": "Muffins",
+    "category": "desserts",
+    "description": "Soft and fluffy muffins in assorted flavors",
+    "image": "muffins.png",
+    "price": 80,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "26": {
+    "id": 26,
+    "title": "Donuts",
+    "category": "desserts",
+    "description": "Soft glazed donuts with various toppings",
+    "image": "donuts.png",
+    "price": 70,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "27": {
+    "id": 27,
+    "title": "Cheesecake",
+    "category": "desserts",
+    "description": "Creamy and smooth classic New York-style cheesecake",
+    "image": "cheesecake.png",
+    "price": 150,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "28": {
+    "id": 28,
+    "title": "Brownies",
+    "category": "desserts",
+    "description": "Fudgy and rich chocolate brownies baked fresh daily",
+    "image": "brownies.png",
+    "price": 100,
+    "rating": { "rate": 5, "count": 0 }
+  },
+  "29": {
+    "id": 29,
+    "title": "Sandwiches",
+    "category": "meals",
+    "description": "Hearty sandwiches with fresh fillings and toasted bread",
+    "image": "sandwiches.png",
+    "price": 180,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "30": {
+    "id": 30,
+    "title": "Pasta",
+    "category": "meals",
+    "description": "Freshly cooked pasta available in various sauces",
+    "image": "pasta.png",
+    "price": 200,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "31": {
+    "id": 31,
+    "title": "Rice Meals",
+    "category": "meals",
+    "description": "Filling rice meals with viand and side dishes",
+    "image": "rice_meals.png",
+    "price": 180,
+    "rating": { "rate": 4, "count": 0 }
+  },
+  "32": {
+    "id": 32,
+    "title": "Breakfast Meals",
+    "category": "meals",
+    "description": "Classic all-day Filipino breakfast served with rice",
+    "image": "breakfast_meals.png",
+    "price": 220,
+    "rating": { "rate": 5, "count": 0 }
+  }
+}

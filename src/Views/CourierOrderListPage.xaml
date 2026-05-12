@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiStoreApp.Views.CourierOrderListPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+    xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Converters;assembly=CommunityToolkit.Maui"
+    xmlns:local="clr-namespace:MauiStoreApp.ViewModels"
+    xmlns:models="clr-namespace:MauiStoreApp.Models"
+    x:DataType="local:CourierDashboardViewModel"
+    BackgroundColor="#0D0705"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Behaviors>
+        <behaviors:EventToCommandBehavior
+            Command="{Binding InitCommand}"
+            EventName="NavigatedTo" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- ══ HEADER ══════════════════════════════════════════════════════════ -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*" Padding="20,50,20,16">
+            <Frame Grid.Column="0"
+                   WidthRequest="36" HeightRequest="36"
+                   CornerRadius="18" Padding="0"
+                   BackgroundColor="#1A0E08" BorderColor="#2E1C0E">
+                <Label Text="‹" FontSize="22" FontAttributes="Bold"
+                       TextColor="#C9A96E"
+                       HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Frame>
+            <StackLayout Grid.Column="1" Spacing="2"
+                         HorizontalOptions="Center" VerticalOptions="Center"
+                         Margin="-36,0,0,0">
+                <Label Text="Courier Dashboard 🛵"
+                       FontSize="11" TextColor="#7A6650"
+                       FontFamily="AstoreEczarSemiBold"
+                       HorizontalOptions="Center" />
+                <Label Text="DCafé Deliveries"
+                       FontSize="20" FontAttributes="Bold"
+                       FontFamily="AstoreEczarSemiBold"
+                       TextColor="#F5EDD8" HorizontalOptions="Center" />
+            </StackLayout>
+        </Grid>
+
+        <!-- ══ TAB STRIP ═══════════════════════════════════════════════════════ -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="16,0,16,12">
+            <!-- Available tab -->
+            <Frame Grid.Column="0"
+                   Padding="0" CornerRadius="12" Margin="0,0,4,0"
+                   BackgroundColor="{Binding IsAvailableTab, Converter={StaticResource InvertedBoolConverter}, ConverterParameter='#C9A96E:#1A0E08'}"
+                   BorderColor="#2E1C0E">
+                <Label Text="Available"
+                       FontSize="13" FontAttributes="Bold"
+                       FontFamily="AstoreEczarSemiBold"
+                       HorizontalOptions="Center"
+                       Padding="0,10"
+                       TextColor="{Binding IsAvailableTab, Converter={StaticResource InvertedBoolConverter}, ConverterParameter='#0D0705:#7A6650'}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectAvailableTabCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Frame>
+
+            <!-- My Deliveries tab -->
+            <Frame Grid.Column="1"
+                   Padding="0" CornerRadius="12" Margin="4,0,0,0"
+                   BackgroundColor="#1A0E08" BorderColor="#2E1C0E">
+                <Label Text="My Deliveries"
+                       FontSize="13" FontAttributes="Bold"
+                       FontFamily="AstoreEczarSemiBold"
+                       HorizontalOptions="Center"
+                       Padding="0,10"
+                       TextColor="#7A6650">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectMyOrdersTabCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Frame>
+        </Grid>
+
+        <!-- ══ CONTENT AREA ════════════════════════════════════════════════════ -->
+        <Grid Grid.Row="2">
+
+            <!-- Loading indicator -->
+            <ActivityIndicator
+                IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                Color="#C9A96E"
+                HorizontalOptions="Center" VerticalOptions="Center" />
+
+            <!-- ── AVAILABLE ORDERS tab ──────────────────────────────────────── -->
+            <Grid IsVisible="{Binding IsAvailableTab}">
+
+                <!-- Empty state -->
+                <StackLayout
+                    IsVisible="{Binding HasNoAvailable}"
+                    VerticalOptions="Center" HorizontalOptions="Center" Spacing="12">
+                    <Label Text="📭" FontSize="56" HorizontalOptions="Center" />
+                    <Label Text="No available orders"
+                           FontSize="18" FontAttributes="Bold"
+                           FontFamily="AstoreEczarSemiBold"
+                           TextColor="#F5EDD8" HorizontalOptions="Center" />
+                    <Label Text="Check back soon for new deliveries"
+                           FontSize="13" TextColor="#7A6650"
+                           FontFamily="AstoreEczarSemiBold"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+
+                <!-- Order list -->
+                <CollectionView
+                    ItemsSource="{Binding AvailableOrders}"
+                    IsVisible="{Binding HasNoAvailable, Converter={StaticResource InvertedBoolConverter}}"
+                    Margin="0,4,0,0">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Order">
+                            <Frame
+                                Margin="16,0,16,12" Padding="16"
+                                BackgroundColor="#1A0E08" BorderColor="#2E1C0E"
+                                CornerRadius="16">
+                                <StackLayout Spacing="10">
+
+                                    <!-- Order ID + Status -->
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0"
+                                               Text="{Binding OrderId, StringFormat='Order #{0}'}"
+                                               FontSize="14" FontAttributes="Bold"
+                                               FontFamily="AstoreEczarSemiBold"
+                                               TextColor="#C9A96E" VerticalOptions="Center" />
+                                        <Frame Grid.Column="1" Padding="8,3"
+                                               BackgroundColor="Transparent"
+                                               BorderColor="{Binding StatusColor}" CornerRadius="8">
+                                            <Label Text="{Binding Status}"
+                                                   FontSize="11" FontAttributes="Bold"
+                                                   FontFamily="AstoreEczarSemiBold"
+                                                   TextColor="{Binding StatusColor}" />
+                                        </Frame>
+                                    </Grid>
+
+                                    <BoxView HeightRequest="1" Color="#2E1C0E" />
+
+                                    <!-- Customer + Address -->
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0" Text="Customer"
+                                               TextColor="#7A6650" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                        <Label Grid.Column="1" Text="{Binding FullName}"
+                                               TextColor="#F5EDD8" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                    </Grid>
+                                    <Grid ColumnDefinitions="*,*">
+                                        <Label Grid.Column="0" Text="Address"
+                                               TextColor="#7A6650" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                        <Label Grid.Column="1" Text="{Binding Address}"
+                                               TextColor="#F5EDD8" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold"
+                                               LineBreakMode="TailTruncation" MaxLines="1"
+                                               HorizontalOptions="End" HorizontalTextAlignment="End" />
+                                    </Grid>
+
+                                    <!-- Total -->
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0" Text="Total"
+                                               TextColor="#7A6650" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding TotalAmount, StringFormat='₱{0:F2}'}"
+                                               TextColor="#C9A96E" FontSize="13" FontAttributes="Bold"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                    </Grid>
+
+                                    <!-- Date -->
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0" Text="Placed"
+                                               TextColor="#7A6650" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding PlacedAt, StringFormat='{0:MMM dd  h:mm tt}'}"
+                                               TextColor="#F5EDD8" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                    </Grid>
+
+                                    <!-- Accept button -->
+                                    <Button
+                                        Text="🛵  Accept Order"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:CourierDashboardViewModel}}, Path=AcceptOrderCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="#C9A96E"
+                                        TextColor="#0D0705"
+                                        FontAttributes="Bold"
+                                        FontFamily="AstoreEczarSemiBold"
+                                        FontSize="14"
+                                        CornerRadius="10"
+                                        HeightRequest="44"
+                                        Margin="0,4,0,0" />
+
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+
+            <!-- ── MY DELIVERIES tab ─────────────────────────────────────────── -->
+            <Grid IsVisible="{Binding IsMyOrdersTab}">
+
+                <!-- Empty state -->
+                <StackLayout
+                    IsVisible="{Binding HasNoMyOrders}"
+                    VerticalOptions="Center" HorizontalOptions="Center" Spacing="12">
+                    <Label Text="🚚" FontSize="56" HorizontalOptions="Center" />
+                    <Label Text="No active deliveries"
+                           FontSize="18" FontAttributes="Bold"
+                           FontFamily="AstoreEczarSemiBold"
+                           TextColor="#F5EDD8" HorizontalOptions="Center" />
+                    <Label Text="Accept an order from the Available tab"
+                           FontSize="13" TextColor="#7A6650"
+                           FontFamily="AstoreEczarSemiBold"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+
+                <!-- My orders list -->
+                <CollectionView
+                    ItemsSource="{Binding MyOrders}"
+                    IsVisible="{Binding HasNoMyOrders, Converter={StaticResource InvertedBoolConverter}}"
+                    Margin="0,4,0,0">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Order">
+                            <Frame
+                                Margin="16,0,16,12" Padding="16"
+                                BackgroundColor="#1A0E08" BorderColor="#2E1C0E"
+                                CornerRadius="16">
+                                <StackLayout Spacing="10">
+
+                                    <!-- Order ID + Status -->
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0"
+                                               Text="{Binding OrderId, StringFormat='Order #{0}'}"
+                                               FontSize="14" FontAttributes="Bold"
+                                               FontFamily="AstoreEczarSemiBold"
+                                               TextColor="#C9A96E" VerticalOptions="Center" />
+                                        <Frame Grid.Column="1" Padding="8,3"
+                                               BackgroundColor="Transparent"
+                                               BorderColor="{Binding StatusColor}" CornerRadius="8">
+                                            <Label Text="{Binding Status}"
+                                                   FontSize="11" FontAttributes="Bold"
+                                                   FontFamily="AstoreEczarSemiBold"
+                                                   TextColor="{Binding StatusColor}" />
+                                        </Frame>
+                                    </Grid>
+
+                                    <BoxView HeightRequest="1" Color="#2E1C0E" />
+
+                                    <!-- Customer -->
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0" Text="Customer"
+                                               TextColor="#7A6650" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                        <Label Grid.Column="1" Text="{Binding FullName}"
+                                               TextColor="#F5EDD8" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                    </Grid>
+
+                                    <!-- Phone -->
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0" Text="Phone"
+                                               TextColor="#7A6650" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                        <Label Grid.Column="1" Text="{Binding PhoneNumber}"
+                                               TextColor="#F5EDD8" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                    </Grid>
+
+                                    <!-- Address -->
+                                    <StackLayout Spacing="3">
+                                        <Label Text="Delivery Address"
+                                               TextColor="#7A6650" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                        <Label Text="{Binding Address}"
+                                               TextColor="#F5EDD8" FontSize="13"
+                                               FontFamily="AstoreEczarSemiBold"
+                                               LineBreakMode="WordWrap" />
+                                    </StackLayout>
+
+                                    <!-- Total -->
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0" Text="Total"
+                                               TextColor="#7A6650" FontSize="12"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding TotalAmount, StringFormat='₱{0:F2}'}"
+                                               TextColor="#C9A96E" FontSize="13" FontAttributes="Bold"
+                                               FontFamily="AstoreEczarSemiBold" />
+                                    </Grid>
+
+                                    <!--
+                                        Advance status button.
+                                        Visible when CanCourierAdvance (Processing/Shipped/Out for Delivery).
+                                        Label changes dynamically via Order.CourierActionLabel (INPC).
+                                        When Status == Delivered this hides automatically —
+                                        customer must confirm on their end.
+                                    -->
+                                    <Button
+                                        IsVisible="{Binding CanCourierAdvance}"
+                                        Text="{Binding CourierActionLabel}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:CourierDashboardViewModel}}, Path=AdvanceStatusCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="#1C2A3A"
+                                        TextColor="#4A90E2"
+                                        FontAttributes="Bold"
+                                        FontFamily="AstoreEczarSemiBold"
+                                        FontSize="14"
+                                        CornerRadius="10"
+                                        HeightRequest="44"
+                                        Margin="0,4,0,0" />
+
+                                    <!-- "Waiting for customer" message when Delivered -->
+                                    <Label
+                                        IsVisible="{Binding IsDelivered}"
+                                        Text="✅ Marked as Delivered — waiting for customer confirmation"
+                                        TextColor="#5DBB7A"
+                                        FontSize="12"
+                                        FontFamily="AstoreEczarSemiBold"
+                                        HorizontalTextAlignment="Center"
+                                        Margin="0,4,0,0" />
+
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,25 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg width="456" height="456" viewBox="0 0 456 456" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- Background -->
+    <rect width="456" height="456" fill="#0D0705"></rect>
+
+    <!-- Outer Circle -->
+    <circle cx="228" cy="228" r="170" fill="#1A0E08" stroke="#C9A96E" stroke-width="4"></circle>
+
+    <!-- Coffee Cup -->
+    <g transform="translate(0,10)">
+        <!-- Cup Body -->
+        <rect x="160" y="200" width="136" height="90" rx="20" fill="#F5EDD8"></rect>
+
+        <!-- Cup Handle -->
+        <path d="M296 220 
+                 Q330 230 296 260" fill="none" stroke="#F5EDD8" stroke-width="10" stroke-linecap="round"></path>
+
+        <!-- Steam (Modern minimal lines) -->
+        <path d="M200 180 Q210 150 200 130" stroke="#C9A96E" stroke-width="4" fill="none" stroke-linecap="round"></path>
+        <path d="M228 180 Q238 150 228 130" stroke="#C9A96E" stroke-width="4" fill="none" stroke-linecap="round"></path>
+        <path d="M256 180 Q266 150 256 130" stroke="#C9A96E" stroke-width="4" fill="none" stroke-linecap="round"></path>
+    </g>
+
+</svg>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiStoreApp.Views.EditProfilePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:MauiStoreApp.ViewModels"
+    xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Converters;assembly=CommunityToolkit.Maui"
+    x:DataType="vm:EditProfileViewModel"
+    BackgroundColor="#0D0705"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- HEADER -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*" Padding="20,50,20,16">
+            <Frame Grid.Column="0"
+                   WidthRequest="36" HeightRequest="36"
+                   CornerRadius="18" Padding="0"
+                   BackgroundColor="#1A0E08" BorderColor="#2E1C0E">
+                <Label Text="‹" FontSize="22" FontAttributes="Bold"
+                       TextColor="#C9A96E"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Frame>
+            <StackLayout Grid.Column="1" Spacing="2"
+                         HorizontalOptions="Center" VerticalOptions="Center"
+                         Margin="-36,0,0,0">
+                <Label Text="Edit Profile ✏️"
+                       FontSize="11" TextColor="#7A6650"
+                       FontFamily="AstoreEczarSemiBold"
+                       HorizontalOptions="Center" />
+                <Label Text="My Account"
+                       FontSize="20" FontAttributes="Bold"
+                       FontFamily="AstoreEczarSemiBold"
+                       TextColor="#F5EDD8" HorizontalOptions="Center" />
+            </StackLayout>
+        </Grid>
+
+        <!-- FORM -->
+        <ScrollView Grid.Row="1">
+            <StackLayout Padding="20,8,20,20" Spacing="14">
+
+                <!-- Full Name -->
+                <Label Text="FULL NAME" FontSize="11" FontAttributes="Bold"
+                       FontFamily="AstoreEczarSemiBold" TextColor="#7A6650" Margin="4,0,0,2" />
+                <Frame Padding="16,0" BackgroundColor="#1A0E08"
+                       BorderColor="#2E1C0E" CornerRadius="14" HeightRequest="52">
+                    <Entry Placeholder="Full Name" PlaceholderColor="#4A3828"
+                           Text="{Binding FullName}" TextColor="#F5EDD8"
+                           FontFamily="AstoreEczarSemiBold" FontSize="14"
+                           BackgroundColor="Transparent" VerticalOptions="Center"
+                           ReturnType="Next" />
+                </Frame>
+
+                <!-- Phone -->
+                <Label Text="PHONE" FontSize="11" FontAttributes="Bold"
+                       FontFamily="AstoreEczarSemiBold" TextColor="#7A6650" Margin="4,0,0,2" />
+                <Frame Padding="16,0" BackgroundColor="#1A0E08"
+                       BorderColor="#2E1C0E" CornerRadius="14" HeightRequest="52">
+                    <Entry Placeholder="Phone Number" PlaceholderColor="#4A3828"
+                           Text="{Binding Phone}" TextColor="#F5EDD8"
+                           FontFamily="AstoreEczarSemiBold" FontSize="14"
+                           BackgroundColor="Transparent" VerticalOptions="Center"
+                           Keyboard="Telephone" ReturnType="Next" />
+                </Frame>
+
+                <!-- Street -->
+                <Label Text="STREET" FontSize="11" FontAttributes="Bold"
+                       FontFamily="AstoreEczarSemiBold" TextColor="#7A6650" Margin="4,0,0,2" />
+                <Frame Padding="16,0" BackgroundColor="#1A0E08"
+                       BorderColor="#2E1C0E" CornerRadius="14" HeightRequest="52">
+                    <Entry Placeholder="Street Address" PlaceholderColor="#4A3828"
+                           Text="{Binding Street}" TextColor="#F5EDD8"
+                           FontFamily="AstoreEczarSemiBold" FontSize="14"
+                           BackgroundColor="Transparent" VerticalOptions="Center"
+                           ReturnType="Next" />
+                </Frame>
+
+                <!-- City -->
+                <Label Text="CITY" FontSize="11" FontAttributes="Bold"
+                       FontFamily="AstoreEczarSemiBold" TextColor="#7A6650" Margin="4,0,0,2" />
+                <Frame Padding="16,0" BackgroundColor="#1A0E08"
+                       BorderColor="#2E1C0E" CornerRadius="14" HeightRequest="52">
+                    <Entry Placeholder="City" PlaceholderColor="#4A3828"
+                           Text="{Binding City}" TextColor="#F5EDD8"
+                           FontFamily="AstoreEczarSemiBold" FontSize="14"
+                           BackgroundColor="Transparent" VerticalOptions="Center"
+                           ReturnType="Done" />
+                </Frame>
+
+                <!-- Province -->
+                <Label Text="PROVINCE" FontSize="11" FontAttributes="Bold"
+                       FontFamily="AstoreEczarSemiBold" TextColor="#7A6650" Margin="4,0,0,2" />
+                <Frame Padding="16,0" BackgroundColor="#1A0E08"
+                       BorderColor="#2E1C0E" CornerRadius="14" HeightRequest="52">
+                    <Entry Placeholder="Province" PlaceholderColor="#4A3828"
+                           Text="{Binding Province}" TextColor="#F5EDD8"
+                           FontFamily="AstoreEczarSemiBold" FontSize="14"
+                           BackgroundColor="Transparent" VerticalOptions="Center"
+                           ReturnType="Done" />
+                </Frame>
+
+                <ActivityIndicator
+                    IsRunning="{Binding IsBusy}"
+                    IsVisible="{Binding IsBusy}"
+                    Color="#C9A96E"
+                    HorizontalOptions="Center"
+                    Margin="0,4,0,0" />
+
+            </StackLayout>
+        </ScrollView>
+
+        <!-- SAVE BUTTON pinned to bottom -->
+        <Button Grid.Row="2"
+                Text="Save Changes"
+                Command="{Binding SaveProfileCommand}"
+                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                BackgroundColor="#C9A96E"
+                TextColor="#0D0705"
+                FontAttributes="Bold"
+                FontFamily="AstoreEczarSemiBold"
+                FontSize="16"
+                CornerRadius="14"
+                HeightRequest="52"
+                Margin="20,8,20,32" />
+
+    </Grid>
+</ContentPage>

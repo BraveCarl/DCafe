@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Use the splash background (dark brown) so the system bars and theme
+         don't show the purple/violet color when the app starts. -->
+    <color name="splash_background">#0D0705</color>
+
+    <!-- Keep primary colors in sync with the splash so there is no color flash -->
+    <color name="colorPrimary">#0D0705</color>
+    <color name="colorPrimaryDark">#0D0705</color>
+    <color name="colorAccent">#0D0705</color>
+</resources>

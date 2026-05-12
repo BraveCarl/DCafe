@@ -1,0 +1,356 @@
+<ContentPage
+    x:Class="MauiStoreApp.Views.ProductDetailsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+    xmlns:local="clr-namespace:MauiStoreApp.ViewModels"
+    xmlns:model="clr-namespace:MauiStoreApp.Models"
+    xmlns:vm="clr-namespace:MauiStoreApp.ViewModels"
+    x:DataType="local:ProductDetailsViewModel"
+    BackgroundColor="#0D0705"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+        <behaviors:EventToCommandBehavior Command="{Binding InitCommand}" EventName="NavigatedTo" />
+    </ContentPage.Behaviors>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ScrollView>
+            <VerticalStackLayout Padding="0">
+
+                <!-- Nav bar -->
+                <Grid
+                    Padding="10,14"
+                    BackgroundColor="#0D0705"
+                    ColumnDefinitions="48,*,48"
+                    ColumnSpacing="6">
+
+                    <Frame
+                        Grid.Column="0"
+                        WidthRequest="38"
+                        HeightRequest="38"
+                        CornerRadius="19"
+                        BackgroundColor="#1A0E08"
+                        BorderColor="#2E1C0E"
+                        Padding="0"
+                        VerticalOptions="Center">
+                        <ImageButton
+                            BackgroundColor="Transparent"
+                            HeightRequest="38"
+                            Source="arrow_back.svg"
+                            WidthRequest="38">
+                            <ImageButton.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:ProductDetailsViewModel}}, Path=GoBackCommand}" />
+                            </ImageButton.GestureRecognizers>
+                        </ImageButton>
+                    </Frame>
+
+                    <!-- Center: brand name -->
+                    <Label
+                        Grid.Column="1"
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="D" TextColor="#C9A96E" FontAttributes="Bold" FontFamily="AstoreEczarSemiBold" />
+                                <Span Text="Café" TextColor="#F5EDD8" FontAttributes="Bold" FontFamily="AstoreEczarSemiBold" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Frame
+                        Grid.Column="2"
+                        WidthRequest="38"
+                        HeightRequest="38"
+                        CornerRadius="19"
+                        BackgroundColor="#1A0E08"
+                        BorderColor="#2E1C0E"
+                        Padding="0"
+                        VerticalOptions="Center">
+                        <ImageButton
+                            BackgroundColor="Transparent"
+                            Command="{Binding ShareProductCommand}"
+                            CommandParameter="{Binding Product}"
+                            HeightRequest="38"
+                            Source="share.svg"
+                            WidthRequest="38" />
+                    </Frame>
+                </Grid>
+
+                <!-- Product image hero -->
+                <Frame
+                    Margin="16,8"
+                    Padding="0"
+                    BackgroundColor="#1A0E08"
+                    BorderColor="#2E1C0E"
+                    CornerRadius="24"
+                    HasShadow="False"
+                    HeightRequest="240">
+                    <Grid>
+                        <Image
+                            Margin="32"
+                            Aspect="AspectFit"
+                            Source="{Binding Product.Image}" />
+
+                        <!-- Available badge -->
+                        <Frame
+                            Margin="12"
+                            Padding="8,4"
+                            BackgroundColor="#0A1F0A"
+                            BorderColor="#1A4A1A"
+                            CornerRadius="10"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start">
+                            <StackLayout Orientation="Horizontal" Spacing="5">
+                                <BoxView
+                                    WidthRequest="7"
+                                    HeightRequest="7"
+                                    CornerRadius="4"
+                                    BackgroundColor="#4CAF50"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="AstoreEczarSemiBold"
+                                    FontSize="11"
+                                    Text="Available"
+                                    TextColor="#4CAF50"
+                                    VerticalTextAlignment="Center" />
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </Frame>
+
+                <!-- Product info card -->
+                <StackLayout Padding="16,4,16,24" Spacing="0">
+
+                    <!-- Title + Price row -->
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            FontFamily="AstoreEczarSemiBold"
+                            FontSize="22"
+                            LineBreakMode="WordWrap"
+                            Text="{Binding Product.Title}"
+                            TextColor="#F5EDD8"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontFamily="AstoreEczarSemiBold"
+                            FontSize="22"
+                            Text="{Binding Product.Price, StringFormat='₱{0:F2}'}"
+                            TextColor="#C9A96E"
+                            VerticalOptions="Center"
+                            Margin="12,0,0,0" />
+                    </Grid>
+
+                    <!-- Add to cart button -->
+                    <Button
+                        Margin="0,0,0,20"
+                        CornerRadius="14"
+                        HeightRequest="52"
+                        HorizontalOptions="FillAndExpand"
+                        BackgroundColor="#C9A96E"
+                        TextColor="#0D0705"
+                        FontAttributes="Bold"
+                        FontFamily="AstoreEczarSemiBold"
+                        FontSize="16"
+                        Command="{Binding AddToCartCommand}"
+                        CommandParameter="{Binding Product}"
+                        Text="Add to Cart" />
+
+                    <!-- Description section -->
+                    <Frame
+                        Margin="0,0,0,12"
+                        Padding="16"
+                        BackgroundColor="#1A0E08"
+                        BorderColor="#2E1C0E"
+                        CornerRadius="16"
+                        HasShadow="False">
+                        <StackLayout Spacing="8">
+                            <Label
+                                FontAttributes="Bold"
+                                FontFamily="AstoreEczarSemiBold"
+                                FontSize="15"
+                                Text="Description"
+                                TextColor="#F5EDD8" />
+                            <BoxView HeightRequest="1" Color="#2E1C0E" />
+                            <Label
+                                FontFamily="AstoreEczarSemiBold"
+                                FontSize="13"
+                                Text="{Binding Product.Description}"
+                                TextColor="#7A6650"
+                                LineHeight="1.5" />
+                        </StackLayout>
+                    </Frame>
+
+                    <!-- Category + Reviews row -->
+                    <Grid ColumnSpacing="12" Margin="0,0,0,20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Category -->
+                        <Frame
+                            Grid.Column="0"
+                            Padding="14"
+                            BackgroundColor="#1A0E08"
+                            BorderColor="#2E1C0E"
+                            CornerRadius="16"
+                            HasShadow="False">
+                            <StackLayout Spacing="6">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="AstoreEczarSemiBold"
+                                    FontSize="11"
+                                    Text="CATEGORY"
+                                    TextColor="#7A6650" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="AstoreEczarSemiBold"
+                                    FontSize="14"
+                                    Text="{Binding Product.Category}"
+                                    TextColor="#C9A96E" />
+                            </StackLayout>
+                        </Frame>
+
+                        <!-- Rating -->
+                        <Frame
+                            Grid.Column="1"
+                            Padding="14"
+                            BackgroundColor="#1A0E08"
+                            BorderColor="#2E1C0E"
+                            CornerRadius="16"
+                            HasShadow="False">
+                            <StackLayout Spacing="6">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="AstoreEczarSemiBold"
+                                    FontSize="11"
+                                    Text="RATING"
+                                    TextColor="#7A6650" />
+                                <StackLayout Orientation="Horizontal" Spacing="5">
+                                    <Image
+                                        Source="star_filled_yellow.svg"
+                                        HeightRequest="16"
+                                        WidthRequest="16"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontFamily="AstoreEczarSemiBold"
+                                        FontSize="14"
+                                        Text="{Binding Product.Rating.Rate}"
+                                        TextColor="#C9A96E"
+                                        VerticalTextAlignment="Center" />
+                                    <Label
+                                        FontFamily="AstoreEczarSemiBold"
+                                        FontSize="11"
+                                        Text="{Binding Product.Rating.Count, StringFormat='({0})'}"
+                                        TextColor="#7A6650"
+                                        VerticalTextAlignment="Center" />
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+
+                    <!-- You may also like -->
+                    <Label
+                        Margin="0,0,0,12"
+                        FontAttributes="Bold"
+                        FontFamily="AstoreEczarSemiBold"
+                        FontSize="17"
+                        Text="You may also like"
+                        TextColor="#F5EDD8" />
+
+                    <CollectionView ItemsLayout="HorizontalList" ItemsSource="{Binding CrossSellProducts}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Product">
+                                <Frame
+                                    Margin="0,0,12,4"
+                                    Padding="0"
+                                    BackgroundColor="#1A0E08"
+                                    BorderColor="#2E1C0E"
+                                    CornerRadius="16"
+                                    HasShadow="False"
+                                    WidthRequest="140">
+                                    <StackLayout>
+                                        <Frame
+                                            Padding="0"
+                                            BackgroundColor="#120A04"
+                                            BorderColor="Transparent"
+                                            CornerRadius="0"
+                                            HeightRequest="100"
+                                            HasShadow="False">
+                                            <Image
+                                                Margin="14"
+                                                Aspect="AspectFit"
+                                                Source="{Binding Image}">
+                                                <Image.GestureRecognizers>
+                                                    <TapGestureRecognizer
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:ProductDetailsViewModel}}, Path=ProductTappedCommand}"
+                                                        CommandParameter="{Binding .}" />
+                                                </Image.GestureRecognizers>
+                                            </Image>
+                                        </Frame>
+
+                                        <StackLayout Padding="10,8,10,12" Spacing="4">
+                                            <StackLayout Orientation="Horizontal" Spacing="3">
+                                                <Image Source="star_filled_yellow.svg" HeightRequest="11" WidthRequest="11" VerticalOptions="Center" />
+                                                <Label
+                                                    Text="{Binding Rating.Rate}"
+                                                    FontSize="10"
+                                                    FontAttributes="Bold"
+                                                    FontFamily="AstoreEczarSemiBold"
+                                                    TextColor="#C9A96E"
+                                                    VerticalTextAlignment="Center" />
+                                            </StackLayout>
+                                            <Label
+                                                Text="{Binding Title}"
+                                                FontSize="11"
+                                                FontFamily="AstoreEczarSemiBold"
+                                                TextColor="#F5EDD8"
+                                                LineBreakMode="WordWrap"
+                                                MaxLines="2" />
+                                            <Label
+                                                Text="{Binding Price, StringFormat='₱{0:F2}'}"
+                                                FontSize="13"
+                                                FontAttributes="Bold"
+                                                FontFamily="AstoreEczarSemiBold"
+                                                TextColor="#C9A96E" />
+                                        </StackLayout>
+
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ProductDetailsViewModel}}, Path=ProductTappedCommand}"
+                                                CommandParameter="{Binding .}" />
+                                        </StackLayout.GestureRecognizers>
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator
+            HorizontalOptions="CenterAndExpand"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="CenterAndExpand"
+            Color="#C9A96E" />
+    </Grid>
+</ContentPage>

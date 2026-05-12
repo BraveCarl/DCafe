@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="Maui.SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Use the splash background color resource to avoid the purple flash on startup -->
+    <item name="android:windowBackground">@color/splash_background</item>
+    <item name="android:windowFullscreen">true</item>
+  </style>
+</resources>

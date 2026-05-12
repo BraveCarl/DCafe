@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiStoreApp.Views.RegisterPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MauiStoreApp.ViewModels"
+    x:DataType="local:RegisterViewModel"
+    BackgroundColor="#0D0705"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <Grid Padding="28,60,28,40">
+            <StackLayout Spacing="18">
+
+                <!-- Header (unchanged) -->
+                <StackLayout Spacing="4" Margin="0,0,0,20">
+                    <Label
+                        Text="Create account ☕"
+                        FontSize="13"
+                        TextColor="#F5EDD8"
+                        HorizontalOptions="Center"
+                        FontFamily="AstoreEczarSemiBold" />
+                    <Label FontSize="34" HorizontalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="D" TextColor="#C9A96E" FontAttributes="Bold" />
+                                <Span Text="Café" TextColor="#F5EDD8" FontAttributes="Bold" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+
+                <!-- Username (unchanged) -->
+                <Frame Padding="16,0" BackgroundColor="#1A0E08" BorderColor="#2E1C0E"
+                       CornerRadius="14" HeightRequest="52" Margin="0,0,0,14">
+                    <Entry FontFamily="AstoreEczarSemiBold" FontSize="14"
+                           Placeholder="Username" PlaceholderColor="#4A3828"
+                           Text="{Binding Username}" TextColor="#F5EDD8"
+                           BackgroundColor="Transparent" VerticalOptions="Center" />
+                </Frame>
+
+                <!-- Email (unchanged) -->
+                <Frame Padding="16,0" BackgroundColor="#1A0E08" BorderColor="#2E1C0E"
+                       CornerRadius="14" HeightRequest="52" Margin="0,0,0,14">
+                    <Entry FontFamily="AstoreEczarSemiBold" FontSize="14"
+                           Placeholder="Email" PlaceholderColor="#4A3828"
+                           Text="{Binding Email}" TextColor="#F5EDD8"
+                           BackgroundColor="Transparent" VerticalOptions="Center" />
+                </Frame>
+
+                <!-- Password (unchanged) -->
+                <Frame Padding="16,0" BackgroundColor="#1A0E08" BorderColor="#2E1C0E"
+                       CornerRadius="14" HeightRequest="52" Margin="0,0,0,14">
+                    <AbsoluteLayout>
+                        <Entry AbsoluteLayout.LayoutBounds="0,0,1,1"
+                               AbsoluteLayout.LayoutFlags="All"
+                               FontFamily="AstoreEczarSemiBold" FontSize="14"
+                               IsPassword="True" Placeholder="Password"
+                               PlaceholderColor="#4A3828" Text="{Binding Password}"
+                               TextColor="#F5EDD8" BackgroundColor="Transparent" />
+                        <Image AbsoluteLayout.LayoutBounds="0.98,0.5,20,20"
+                               AbsoluteLayout.LayoutFlags="PositionProportional"
+                               Source="eye_closed.png" />
+                    </AbsoluteLayout>
+                </Frame>
+
+                <!-- Confirm Password (unchanged) -->
+                <Frame Padding="16,0" BackgroundColor="#1A0E08" BorderColor="#2E1C0E"
+                       CornerRadius="14" HeightRequest="52" Margin="0,0,0,14">
+                    <Entry FontFamily="AstoreEczarSemiBold" FontSize="14"
+                           IsPassword="True" Placeholder="Confirm Password"
+                           PlaceholderColor="#4A3828" Text="{Binding ConfirmPassword}"
+                           TextColor="#F5EDD8" BackgroundColor="Transparent"
+                           VerticalOptions="Center" />
+                </Frame>
+
+                <!--
+                    NEW: Role selector
+                    Bound to SelectedRole in RegisterViewModel.
+                    Uses a Frame to match the existing field styling exactly.
+                    ItemsSource is a static list defined in the ViewModel.
+                -->
+                <Label
+                    Text="I am registering as a:"
+                    FontSize="13"
+                    TextColor="#F5EDD8"
+                    FontFamily="AstoreEczarSemiBold"
+                    Margin="4,0,0,0" />
+
+                <Frame Padding="16,0" BackgroundColor="#1A0E08" BorderColor="#2E1C0E"
+                       CornerRadius="14" HeightRequest="52" Margin="0,0,0,14">
+                    <Picker
+                        ItemsSource="{Binding Roles}"
+                        SelectedItem="{Binding SelectedRole}"
+                        Title="Select role"
+                        TitleColor="#4A3828"
+                        TextColor="#F5EDD8"
+                        FontFamily="AstoreEczarSemiBold"
+                        FontSize="14"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Center" />
+                </Frame>
+
+                <!-- Register Button (unchanged) -->
+                <Button
+                    Text="Create Account"
+                    Command="{Binding RegisterCommand}"
+                    BackgroundColor="#C9A96E"
+                    TextColor="#F5EDD8"
+                    CornerRadius="14"
+                    HeightRequest="52"
+                    FontAttributes="Bold" />
+
+                <!-- Back to Login (unchanged) -->
+                <Label
+                    Text="Already have an account? Login"
+                    TextColor="#F5EDD8"
+                    HorizontalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackToLoginCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

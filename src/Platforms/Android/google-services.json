@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "572637878326",
+    "firebase_url": "https://coffeeshopapp-1ae15-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "coffeeshopapp-1ae15",
+    "storage_bucket": "coffeeshopapp-1ae15.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572637878326:android:07ac77c04dd5d60586a097",
+        "android_client_info": {
+          "package_name": "com.companyname.mauistore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzkqtO1V9fnAOHz1QfwsBJ1D0jws0XtLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

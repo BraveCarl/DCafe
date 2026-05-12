@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiStoreApp.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+    xmlns:converters="clr-namespace:MauiStoreApp.Converters"
+    xmlns:local="clr-namespace:MauiStoreApp.ViewModels"
+    xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Converters;assembly=CommunityToolkit.Maui"
+    BackgroundColor="#0D0705">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:CategoryToColorConverter x:Key="CategoryToColorConverter" />
+            <converters:FirstLetterUppercaseConverter x:Key="FirstLetterUppercaseConverter" />
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Behaviors>
+        <behaviors:EventToCommandBehavior Command="{Binding InitCommand}" EventName="NavigatedTo" />
+    </ContentPage.Behaviors>
+
+    <!-- Title Bar -->
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="*,Auto" Padding="16,0">
+            <StackLayout Grid.Column="0" VerticalOptions="Center">
+                <Label
+                    Text="Good morning ☕"
+                    FontSize="10"
+                    TextColor="#7A6650"
+                    FontFamily="DCafé-eczar-semi-bold" />
+                <Label FontSize="20" VerticalOptions="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="D" TextColor="#C9A96E" FontAttributes="Bold" />
+                            <Span Text="Café" TextColor="#F5EDD8" FontAttributes="Bold" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+            <Frame
+                Grid.Column="1"
+                WidthRequest="36" HeightRequest="36"
+                CornerRadius="18"
+                BackgroundColor="#1E1208" BorderColor="#2E1C0E"
+                Padding="0" VerticalOptions="Center">
+                <Image Source="cart.svg" HeightRequest="18" WidthRequest="18"
+                       HorizontalOptions="Center" VerticalOptions="Center" />
+            </Frame>
+        </Grid>
+    </Shell.TitleView>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- ── Fixed top: search bar ── -->
+        <StackLayout Grid.Row="0" Padding="16,10,16,14">
+
+            <!--
+                FIX 1: Replace the fake Frame+Label with a real Entry.
+                Text is two-way bound to SearchText in HomePageViewModel.
+                Every keystroke triggers OnSearchTextChanged → ApplyFilter()
+                with no delay and no thread blocking.
+            -->
+            <Frame
+                Padding="12,0"
+                BackgroundColor="#1A0E08"
+                BorderColor="#2E1C0E"
+                CornerRadius="20"
+                HeightRequest="46">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Image
+                        Grid.Column="0"
+                        Aspect="AspectFit"
+                        HeightRequest="16" WidthRequest="16"
+                        Source="search.svg"
+                        VerticalOptions="Center" />
+                    <Entry
+                        Grid.Column="1"
+                        Text="{Binding SearchText}"
+                        Placeholder="Search drinks &amp; more..."
+                        PlaceholderColor="#7A6650"
+                        TextColor="#F5EDD8"
+                        FontFamily="AstoreEczarSemiBold"
+                        FontSize="13"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Center"
+                        ClearButtonVisibility="WhileEditing"
+                        ReturnType="Search" />
+                </Grid>
+            </Frame>
+
+            <!-- Quick filter pills (static UI, unchanged) -->
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Always" Margin="0,10,0,0">
+                <StackLayout Orientation="Horizontal" Spacing="8">
+                    <Frame Padding="8,4" BackgroundColor="#C9A96E" BorderColor="#C9A96E" CornerRadius="16">
+                        <Label Text="All" FontSize="11" TextColor="#0D0705" FontAttributes="Bold" FontFamily="AstoreEczarSemiBold" />
+                    </Frame>
+                    
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+
+        <!-- ── Scrollable content ── -->
+        <ScrollView Grid.Row="1" IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
+            <StackLayout Padding="16,4,16,20" Spacing="0">
+
+                <!-- Categories (unchanged) -->
+                <Label
+                    Margin="0,8,0,10"
+                    Text="Categories"
+                    FontAttributes="Bold"
+                    FontFamily="AstoreEczarSemiBold"
+                    FontSize="18"
+                    TextColor="#F5EDD8" />
+
+                <!-- Swipe indicator -->
+                <StackLayout Orientation="Horizontal" HorizontalOptions="End" Spacing="4" Margin="0,0,0,6">
+                    <Label Text="Swipe" TextColor="#7A6650" FontSize="10" FontFamily="AstoreEczarSemiBold" VerticalOptions="Center" />
+                    <Label Text="→" TextColor="#C9A96E" FontSize="14" FontAttributes="Bold" VerticalOptions="Center" />
+                </StackLayout>
+
+                <CollectionView ItemsSource="{Binding Categories}" ItemsLayout="HorizontalList" HeightRequest="90">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame
+                                Margin="4,0" Padding="0"
+                                BackgroundColor="#1A0E08" BorderColor="#2E1C0E"
+                                CornerRadius="14" HasShadow="False"
+                                HeightRequest="80" WidthRequest="100">
+                                <Grid>
+                                    <Image Aspect="AspectFill" Source="{Binding ImageName}"
+                                           HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+                                    <BoxView Color="#99000000"
+                                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+                                    <Label
+                                        Text="{Binding Name, Converter={StaticResource FirstLetterUppercaseConverter}}"
+                                        FontAttributes="Bold" FontFamily="AstoreEczarSemiBold"
+                                        FontSize="11" TextColor="#F5EDD8"
+                                        HorizontalTextAlignment="Center" VerticalTextAlignment="End"
+                                        Padding="6,0,6,8" LineBreakMode="WordWrap" MaxLines="2" />
+                                </Grid>
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:HomePageViewModel}}, Path=CategoryTappedCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <BoxView HeightRequest="1" Color="#2E1C0E" Margin="0,4,0,14" />
+
+                <!-- Featured Products header (unchanged) -->
+                <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,10">
+                    <Label
+                        Grid.Column="0"
+                        Text="Featured products"
+                        FontAttributes="Bold" FontFamily="AstoreEczarSemiBold"
+                        FontSize="18" TextColor="#F5EDD8" VerticalOptions="Center" />
+                    <Frame
+                        Grid.Column="1"
+                        Padding="6,3" BackgroundColor="#C9A96E"
+                        BorderColor="Transparent" CornerRadius="8" VerticalOptions="Center">
+                        <Label Text="NEW" FontSize="9" FontAttributes="Bold"
+                               TextColor="#0D0705" FontFamily="AstoreEczarSemiBold" />
+                    </Frame>
+                </Grid>
+
+                <!--
+                    FIX 2: ItemsSource changed from {Binding Products}
+                    to {Binding FilteredProducts}.
+                    FilteredProducts is repopulated by ApplyFilter() on every
+                    SearchText change, and initially mirrors Products 1:1.
+                -->
+                <CollectionView ItemsSource="{Binding FilteredProducts}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2"
+                                         HorizontalItemSpacing="10" VerticalItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame
+                                Padding="0"
+                                BackgroundColor="#1A0E08" BorderColor="#2E1C0E"
+                                CornerRadius="16" HasShadow="False">
+                                <StackLayout>
+                                    <Frame
+                                        Padding="0" BackgroundColor="#120A04"
+                                        BorderColor="Transparent" CornerRadius="0"
+                                        HeightRequest="110" HasShadow="False">
+                                        <Image Margin="16" Aspect="AspectFit" Source="{Binding Image}">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:HomePageViewModel}}, Path=ProductTappedCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Frame>
+
+                                    <StackLayout Padding="10,8,10,12" Spacing="4">
+                                        <StackLayout Orientation="Horizontal" Spacing="4">
+                                            <Image Source="star_filled_yellow.svg"
+                                                   HeightRequest="12" WidthRequest="12"
+                                                   VerticalOptions="Center" />
+                                            <Label Text="{Binding Rating.Rate}"
+                                                   FontSize="11" FontAttributes="Bold"
+                                                   FontFamily="AstoreEczarSemiBold"
+                                                   TextColor="#C9A96E" VerticalTextAlignment="Center" />
+                                        </StackLayout>
+
+                                        <Label Text="{Binding Title}"
+                                               FontSize="12" FontFamily="AstoreEczarSemiBold"
+                                               TextColor="#F5EDD8" LineBreakMode="WordWrap" MaxLines="2" />
+
+                                        <BoxView HeightRequest="1" Color="#2E1C0E" Margin="0,2" />
+
+                                        <Label Text="{Binding Price, StringFormat='₱{0:F2}'}"
+                                               FontSize="14" FontAttributes="Bold"
+                                               FontFamily="AstoreEczarSemiBold" TextColor="#C9A96E" />
+                                    </StackLayout>
+
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:HomePageViewModel}}, Path=ProductTappedCommand}"
+                                            CommandParameter="{Binding .}" />
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Loading Indicator (unchanged) -->
+        <ActivityIndicator
+            Grid.RowSpan="2"
+            HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+            IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+            Color="#C9A96E" />
+
+    </Grid>
+</ContentPage>

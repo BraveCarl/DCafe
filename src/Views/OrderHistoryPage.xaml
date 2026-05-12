@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    OrderHistoryPage.xaml
+    ─────────────────────
+    Customer's order history.
+
+    DELIVERY CONFIRMATION RULES (per requirements):
+    • "Confirm Received" button is visible ONLY when Status == "Delivered".
+    • Navigating to the page does NOT change any status automatically.
+    • The button calls ConfirmOrderCommand → ViewModel shows an alert first.
+    • After the customer confirms, OrderService sets Status to "Completed"
+      and DeliveredAt timestamp in Firebase.
+-->
+<ContentPage
+    x:Class="MauiStoreApp.Views.OrderHistoryPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+    xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Converters;assembly=CommunityToolkit.Maui"
+    xmlns:local="clr-namespace:MauiStoreApp.ViewModels"
+    xmlns:models="clr-namespace:MauiStoreApp.Models"
+    x:DataType="local:OrderHistoryViewModel"
+    BackgroundColor="#0D0705"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!--
+        Fires InitCommand when the page becomes active.
+        Does NOT change any order status — it only loads/refreshes the list.
+    -->
+    <ContentPage.Behaviors>
+        <behaviors:EventToCommandBehavior
+            Command="{Binding InitCommand}"
+            EventName="NavigatedTo" />
+    </ContentPage.Behaviors>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             HEADER
+             ══════════════════════════════════════════════════════════════════ -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*"
+              Padding="20,50,20,16">
+
+            <!-- Back button -->
+            <Frame Grid.Column="0"
+                   WidthRequest="36" HeightRequest="36"
+                   CornerRadius="18" Padding="0"
+                   BackgroundColor="#1A0E08" BorderColor="#2E1C0E">
+                <Label Text="‹"
+                       FontSize="22" FontAttributes="Bold"
+                       TextColor="#C9A96E"
+                       HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateBackCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Frame>
+
+            <!-- Title -->
+            <StackLayout Grid.Column="1"
+                         Spacing="2"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         Margin="-36,0,0,0">
+                <Label Text="Order History"
+                       FontSize="20" FontAttributes="Bold"
+                       FontFamily="AstoreEczarSemiBold"
+                       TextColor="#F5EDD8"
+                       HorizontalOptions="Center" />
+                <Label Text="Track your orders"
+                       FontSize="11" TextColor="#7A6650"
+                       FontFamily="AstoreEczarSemiBold"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+        </Grid>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             EMPTY STATE
+             ══════════════════════════════════════════════════════════════════ -->
+        <StackLayout Grid.Row="1"
+                     IsVisible="{Binding HasNoOrders}"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Center"
+                     Spacing="12">
+
+            <Label Text="📋" FontSize="56" HorizontalOptions="Center" />
+
+            <Label Text="No orders yet"
+                   FontSize="18" FontAttributes="Bold"
+                   FontFamily="AstoreEczarSemiBold"
+                   TextColor="#F5EDD8"
+                   HorizontalOptions="Center" />
+
+            <Label Text="Your placed orders will appear here"
+                   FontSize="13" TextColor="#7A6650"
+                   FontFamily="AstoreEczarSemiBold"
+                   HorizontalOptions="Center" />
+
+            <Button Text="Back to Menu"
+                    Command="{Binding BackToMenuCommand}"
+                    BackgroundColor="#C9A96E"
+                    TextColor="#0D0705"
+                    FontAttributes="Bold"
+                    FontFamily="AstoreEczarSemiBold"
+                    FontSize="14"
+                    CornerRadius="20"
+                    HeightRequest="44"
+                    WidthRequest="160"
+                    Margin="0,12,0,0" />
+
+        </StackLayout>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             ORDER LIST
+             ══════════════════════════════════════════════════════════════════ -->
+        <CollectionView
+            Grid.Row="1"
+            ItemsSource="{Binding Orders}"
+            IsVisible="{Binding HasNoOrders, Converter={StaticResource InvertedBoolConverter}}"
+            Margin="0,4,0,0">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Order">
+
+                    <Frame
+                        Margin="16,0,16,12"
+                        Padding="16"
+                        BackgroundColor="#1A0E08"
+                        BorderColor="#2E1C0E"
+                        CornerRadius="16">
+
+                        <StackLayout Spacing="10">
+
+                            <!-- ── Order ID + Status badge ─────────────────── -->
+                            <Grid ColumnDefinitions="*,Auto">
+
+                                <Label Grid.Column="0"
+                                       Text="{Binding OrderId, StringFormat='Order #{0}'}"
+                                       FontSize="14" FontAttributes="Bold"
+                                       FontFamily="AstoreEczarSemiBold"
+                                       TextColor="#C9A96E"
+                                       VerticalOptions="Center" />
+
+                                <Frame Grid.Column="1"
+                                       Padding="8,3"
+                                       BackgroundColor="Transparent"
+                                       BorderColor="{Binding StatusColor}"
+                                       CornerRadius="8">
+                                    <Label Text="{Binding Status}"
+                                           FontSize="11" FontAttributes="Bold"
+                                           FontFamily="AstoreEczarSemiBold"
+                                           TextColor="{Binding StatusColor}" />
+                                </Frame>
+
+                            </Grid>
+
+                            <BoxView HeightRequest="1" Color="#2E1C0E" />
+
+                            <!-- Delivery progress section — only visible AFTER courier accepts -->
+                            <StackLayout IsVisible="{Binding IsAcceptedByCourier}">
+                                <!-- your status labels, timeline, etc. -->
+                                <Label Text="{Binding Status}" />
+                                <Label Text="{Binding CourierDisplay}" />
+                            </StackLayout>
+
+                            <!-- Confirm Received button — only visible when Delivered -->
+                            <!-- This binding is already correct in your current XAML if it uses IsDelivered -->
+ 
+
+
+                            <!-- ── Date ────────────────────────────────────── -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0" Text="Date"
+                                       TextColor="#7A6650" FontSize="12"
+                                       FontFamily="AstoreEczarSemiBold" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding PlacedAt, StringFormat='{0:MMM dd, yyyy  h:mm tt}'}"
+                                       TextColor="#F5EDD8" FontSize="12"
+                                       FontFamily="AstoreEczarSemiBold" />
+                            </Grid>
+
+                            <!-- ── Total ───────────────────────────────────── -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0" Text="Total"
+                                       TextColor="#7A6650" FontSize="12"
+                                       FontFamily="AstoreEczarSemiBold" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding TotalAmount, StringFormat='₱{0:F2}'}"
+                                       TextColor="#C9A96E" FontSize="13" FontAttributes="Bold"
+                                       FontFamily="AstoreEczarSemiBold" />
+                            </Grid>
+
+                            <!-- ── Address ─────────────────────────────────── -->
+                            <Grid ColumnDefinitions="*,*">
+                                <Label Grid.Column="0" Text="Address"
+                                       TextColor="#7A6650" FontSize="12"
+                                       FontFamily="AstoreEczarSemiBold" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding Address}"
+                                       TextColor="#F5EDD8" FontSize="12"
+                                       FontFamily="AstoreEczarSemiBold"
+                                       LineBreakMode="TailTruncation" MaxLines="1"
+                                       HorizontalOptions="End"
+                                       HorizontalTextAlignment="End" />
+                            </Grid>
+
+                            <!-- ── Payment method + status badge ──────────── -->
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="6">
+                                <Label Grid.Column="0" Text="Payment"
+                                       TextColor="#7A6650" FontSize="12"
+                                       FontFamily="AstoreEczarSemiBold"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding PaymentMethod}"
+                                       TextColor="#F5EDD8" FontSize="12"
+                                       FontFamily="AstoreEczarSemiBold"
+                                       VerticalOptions="Center" />
+                                <Frame Grid.Column="2"
+                                       Padding="6,2"
+                                       BackgroundColor="Transparent"
+                                       CornerRadius="6"
+                                       BorderColor="{Binding PaymentStatusColor}">
+                                    <Label Text="{Binding PaymentStatus}"
+                                           FontSize="10" FontAttributes="Bold"
+                                           FontFamily="AstoreEczarSemiBold"
+                                           TextColor="{Binding PaymentStatusColor}"
+                                           VerticalOptions="Center" />
+                                </Frame>
+                            </Grid>
+
+                            <BoxView HeightRequest="1" Color="#2E1C0E" />
+
+                            <!-- ── Item count ──────────────────────────────── -->
+                            <Label Text="{Binding Items.Count, StringFormat='{0} item(s)'}"
+                                   TextColor="#7A6650" FontSize="12"
+                                   FontFamily="AstoreEczarSemiBold" />
+
+                            <!-- ══════════════════════════════════════════════
+                                 CONFIRM RECEIVED BUTTON
+                                 ══════════════════════════════════════════════
+                                 RULE: Visible ONLY when Status == "Delivered".
+                                 Order.IsDelivered = (Status == "Delivered") — it's
+                                 a computed bool property with INPC, so the button
+                                 disappears automatically once the customer confirms.
+
+                                 The Command travels up the visual tree to the
+                                 OrderHistoryViewModel via RelativeSource + AncestorType.
+                                 CommandParameter passes the entire Order object so the
+                                 ViewModel knows which order to confirm.
+                            -->
+                            <Button
+                                IsVisible="{Binding IsDelivered}"
+                                Text="✅  Confirm Received"
+                                Command="{Binding
+                                    Source={RelativeSource AncestorType={x:Type local:OrderHistoryViewModel}},
+                                    Path=ConfirmOrderCommand}"
+                                CommandParameter="{Binding .}"
+                                BackgroundColor="#1C3020"
+                                TextColor="#5DBB7A"
+                                FontAttributes="Bold"
+                                FontFamily="AstoreEczarSemiBold"
+                                FontSize="14"
+                                CornerRadius="10"
+                                HeightRequest="48"
+                                Margin="0,4,0,0" />
+
+                            <!-- ── Rate order button (Completed, not yet rated) -->
+                            <Button
+                                IsVisible="{Binding CanRate}"
+                                Text="⭐  Rate this Order"
+                                Command="{Binding
+                                    Source={RelativeSource AncestorType={x:Type local:OrderHistoryViewModel}},
+                                    Path=RateOrderCommand}"
+                                CommandParameter="{Binding .}"
+                                BackgroundColor="#2A1E08"
+                                TextColor="#C9A96E"
+                                FontAttributes="Bold"
+                                FontFamily="AstoreEczarSemiBold"
+                                FontSize="14"
+                                CornerRadius="10"
+                                HeightRequest="48"
+                                Margin="0,4,0,0" />
+
+                            <!-- ── Submitted rating display ────────────────── -->
+                            <StackLayout
+                                IsVisible="{Binding IsRated}"
+                                Spacing="4"
+                                Margin="0,4,0,0">
+
+                                <BoxView HeightRequest="1" Color="#2E1C0E" />
+
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0"
+                                           Text="Your rating"
+                                           TextColor="#7A6650" FontSize="12"
+                                           FontFamily="AstoreEczarSemiBold"
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding StarDisplay}"
+                                           TextColor="#C9A96E" FontSize="16"
+                                           VerticalOptions="Center" />
+                                </Grid>
+
+                                <Label
+                                    IsVisible="{Binding HasReview}"
+                                    Text="{Binding Review}"
+                                    TextColor="#7A6650"
+                                    FontFamily="AstoreEczarSemiBold"
+                                    FontSize="12"
+                                    LineBreakMode="WordWrap" />
+
+                            </StackLayout>
+
+                        </StackLayout>
+                    </Frame>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

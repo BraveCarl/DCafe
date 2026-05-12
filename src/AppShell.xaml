@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MauiStoreApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:MauiStoreApp.Views"
+    Shell.FlyoutBehavior="Disabled">
+
+    <TabBar>
+        <!--  Home Page  -->
+        <Tab Title="Menu" Icon="home.svg">
+            <ShellContent ContentTemplate="{DataTemplate views:HomePage}" Route="HomePage" />
+        </Tab>
+
+        <!--  Recently Watched Page  -->
+        <Tab Title="Favorites" Icon="recently_viewed.svg">
+            <ShellContent ContentTemplate="{DataTemplate views:RecentlyViewedPage}" Route="RecentlyViewedPage" />
+        </Tab>
+
+        <!--  Cart Page  -->
+        <Tab Title="Cart" Icon="cart.svg">
+            <ShellContent ContentTemplate="{DataTemplate views:CartPage}" Route="CartPage" />
+        </Tab>
+
+        <!--  Profile Page  -->
+        <Tab Title="Account" Icon="profile.svg">
+            <ShellContent ContentTemplate="{DataTemplate views:ProfilePage}" Route="ProfilePage" />
+        </Tab>
+        
+    </TabBar>
+</Shell>

@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiStoreApp.Views.CheckoutPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+    xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Converters;assembly=CommunityToolkit.Maui"
+    xmlns:local="clr-namespace:MauiStoreApp.ViewModels"
+    xmlns:models="clr-namespace:MauiStoreApp.Models"
+    x:DataType="local:CheckoutViewModel"
+    BackgroundColor="#0D0705"
+    Shell.NavBarIsVisible="False">
+
+    <!--
+        FIX 1: ContentPage.Resources MUST come before any content that references
+        its converters. Original file had Resources at the BOTTOM of the page.
+        MAUI's XAML parser resolves {StaticResource} at parse time — if the
+        resource hasn't been declared yet, the binding silently fails, IsVisible
+        defaults to false, and the entire checkout form disappears (looking like
+        CartItems is empty when it isn't).
+    -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <toolkit:BoolToObjectConverter x:Key="BoolToColorConverter"
+                TrueObject="#C9A96E" FalseObject="#2E1C0E" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Behaviors>
+        <behaviors:EventToCommandBehavior
+            Command="{Binding InitCommand}"
+            EventName="NavigatedTo" />
+    </ContentPage.Behaviors>
+
+    <Grid>
+    <ScrollView>
+        <Grid Padding="20,50,20,40" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- HEADER -->
+            <StackLayout Grid.Row="0" Spacing="4" Margin="0,0,0,24">
+                <Label
+                    Text="Checkout ☕"
+                    FontSize="13"
+                    TextColor="#7A6650"
+                    HorizontalOptions="Center"
+                    FontFamily="DCafé-eczar-semi-bold" />
+                <Label FontSize="30" HorizontalOptions="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="D" TextColor="#C9A96E" FontAttributes="Bold" />
+                            <Span Text="Café" TextColor="#F5EDD8" FontAttributes="Bold" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <BoxView
+                    HeightRequest="2"
+                    WidthRequest="40"
+                    Color="#C9A96E"
+                    HorizontalOptions="Center"
+                    Margin="0,6,0,0" />
+            </StackLayout>
+
+            <!--
+                FIX 2: IsVisible now binds to OrderPlaced (bool) via InvertedBoolConverter.
+                This works because:
+                  a) Resources are now declared above (fix 1).
+                  b) OrderPlaced is now a proper [ObservableProperty] in the ViewModel.
+            -->
+            <StackLayout
+                Grid.Row="1"
+                Spacing="16"
+                IsVisible="{Binding OrderPlaced, Converter={StaticResource InvertedBoolConverter}}">
+
+                <!-- Order Summary -->
+                <Label
+                    Text="Order Summary"
+                    FontSize="15"
+                    FontAttributes="Bold"
+                    FontFamily="DCafé-eczar-semi-bold"
+                    TextColor="#F5EDD8"
+                    Margin="4,0" />
+
+                <Frame
+                    Padding="14"
+                    BackgroundColor="#1A0E08"
+                    BorderColor="#2E1C0E"
+                    CornerRadius="16">
+                    <StackLayout Spacing="0">
+
+                        <!--
+                            FIX 3: Added x:DataType="models:CartItemDetail" to DataTemplate.
+                            Without it, compiled bindings can't resolve Product.Title,
+                            Quantity, Product.Price — items render but show blank text,
+                            or in strict mode throw at runtime.
+
+                            FIX 4: Replaced invalid MultiBinding (only 1 child) with a
+                            simple StringFormat binding for price.
+                            MultiBinding requires 2+ child Bindings. With 1, it silently
+                            produces no output.
+                        -->
+                        <CollectionView
+                            ItemsSource="{Binding CartItems}"
+                            HeightRequest="200"
+                            SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:CartItemDetail">
+                                    <Grid ColumnDefinitions="*,Auto" Padding="0,8">
+                                        <StackLayout Grid.Column="0" Spacing="2">
+                                            <Label
+                                                Text="{Binding Product.Title}"
+                                                FontSize="13"
+                                                FontFamily="DCafé-eczar-semi-bold"
+                                                TextColor="#F5EDD8"
+                                                LineBreakMode="WordWrap"
+                                                MaxLines="2" />
+                                            <Label
+                                                Text="{Binding Quantity, StringFormat='Qty: {0}'}"
+                                                FontSize="11"
+                                                TextColor="#7A6650" />
+                                        </StackLayout>
+                                        <!-- FIX 4: simple StringFormat, not MultiBinding -->
+                                        <Label
+                                            Grid.Column="1"
+                                            Text="{Binding Product.Price, StringFormat='₱{0:F2}'}"
+                                            FontSize="13"
+                                            FontAttributes="Bold"
+                                            FontFamily="DCafé-eczar-semi-bold"
+                                            TextColor="#C9A96E"
+                                            VerticalTextAlignment="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                        <BoxView HeightRequest="1" Color="#2E1C0E" Margin="0,6" />
+
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,4,0,0">
+                            <Label
+                                Grid.Column="0"
+                                Text="Total"
+                                FontSize="15"
+                                FontAttributes="Bold"
+                                FontFamily="DCafé-eczar-semi-bold"
+                                TextColor="#F5EDD8" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding TotalPrice, StringFormat='₱{0:F2}'}"
+                                FontSize="16"
+                                FontAttributes="Bold"
+                                FontFamily="DCafé-eczar-semi-bold"
+                                TextColor="#C9A96E" />
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Delivery Details -->
+                <Label
+                    Text="Delivery Details"
+                    FontSize="15"
+                    FontAttributes="Bold"
+                    FontFamily="DCafé-eczar-semi-bold"
+                    TextColor="#F5EDD8"
+                    Margin="4,8,4,0" />
+
+                <Frame Padding="16,0" BackgroundColor="#1A0E08"
+                       BorderColor="#2E1C0E" CornerRadius="14" HeightRequest="52">
+                    <Entry Placeholder="Full Name" PlaceholderColor="#4A3828"
+                           Text="{Binding FullName}" TextColor="#F5EDD8"
+                           FontFamily="DCafé-eczar-semi-bold" FontSize="14"
+                           BackgroundColor="Transparent" VerticalOptions="Center"
+                           ReturnType="Next" />
+                </Frame>
+
+                <Frame Padding="16,0" BackgroundColor="#1A0E08"
+                       BorderColor="#2E1C0E" CornerRadius="14" HeightRequest="52">
+                    <Entry Placeholder="Phone Number" PlaceholderColor="#4A3828"
+                           Text="{Binding PhoneNumber}" TextColor="#F5EDD8"
+                           FontFamily="DCafé-eczar-semi-bold" FontSize="14"
+                           BackgroundColor="Transparent" VerticalOptions="Center"
+                           Keyboard="Telephone" ReturnType="Next" />
+                </Frame>
+
+                <Frame Padding="16,0" BackgroundColor="#1A0E08"
+                       BorderColor="#2E1C0E" CornerRadius="14" HeightRequest="52">
+                    <Entry Placeholder="Street" PlaceholderColor="#4A3828"
+                           Text="{Binding Street}" TextColor="#F5EDD8"
+                           FontFamily="DCafé-eczar-semi-bold" FontSize="14"
+                           BackgroundColor="Transparent" VerticalOptions="Center"
+                           ReturnType="Next" />
+                </Frame>
+
+                <Frame Padding="16,0" BackgroundColor="#1A0E08"
+                       BorderColor="#2E1C0E" CornerRadius="14" HeightRequest="52">
+                    <Entry Placeholder="City" PlaceholderColor="#4A3828"
+                           Text="{Binding City}" TextColor="#F5EDD8"
+                           FontFamily="DCafé-eczar-semi-bold" FontSize="14"
+                           BackgroundColor="Transparent" VerticalOptions="Center"
+                           ReturnType="Next" />
+                </Frame>
+
+                <Frame Padding="16,0" BackgroundColor="#1A0E08"
+                       BorderColor="#2E1C0E" CornerRadius="14" HeightRequest="52">
+                    <Entry Placeholder="Province" PlaceholderColor="#4A3828"
+                           Text="{Binding Province}" TextColor="#F5EDD8"
+                           FontFamily="DCafé-eczar-semi-bold" FontSize="14"
+                           BackgroundColor="Transparent" VerticalOptions="Center"
+                           ReturnType="Done" />
+                </Frame>
+
+                <!-- Payment Method -->
+                <Label Text="Payment Method" FontSize="15" FontAttributes="Bold"
+                       FontFamily="DCafé-eczar-semi-bold" TextColor="#F5EDD8"
+                       Margin="4,8,4,0" />
+
+                <!-- COD Option -->
+                <Frame Padding="16,14" BackgroundColor="#1A0E08"
+                       BorderColor="{Binding IsCODSelected, Converter={StaticResource BoolToColorConverter}}"
+                       CornerRadius="14">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectCODCommand}" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Frame Grid.Column="0" Padding="8,6"
+                               BackgroundColor="#2E1C0E" BorderColor="Transparent"
+                               CornerRadius="10" WidthRequest="40" HeightRequest="40"
+                               VerticalOptions="Center">
+                            <Label Text="💵" FontSize="18"
+                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Frame>
+                        <StackLayout Grid.Column="1" Spacing="2"
+                                     Margin="12,0,0,0" VerticalOptions="Center">
+                            <Label Text="Cash on Delivery" FontSize="13" FontAttributes="Bold"
+                                   FontFamily="DCafé-eczar-semi-bold" TextColor="#F5EDD8" />
+                            <Label Text="Pay when your order arrives"
+                                   FontSize="11" TextColor="#7A6650" />
+                        </StackLayout>
+                        <Frame Grid.Column="2" Padding="0"
+                               BackgroundColor="{Binding IsCODSelected, Converter={StaticResource BoolToColorConverter}}"
+                               BorderColor="Transparent"
+                               CornerRadius="12" WidthRequest="24" HeightRequest="24"
+                               VerticalOptions="Center"
+                               IsVisible="{Binding IsCODSelected}">
+                            <Label Text="✓" FontSize="13" FontAttributes="Bold"
+                                   TextColor="#0D0705"
+                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Frame>
+                    </Grid>
+                </Frame>
+
+                <!-- GCash Option -->
+                <Frame Padding="16,14" BackgroundColor="#1A0E08"
+                       BorderColor="{Binding IsGCashSelected, Converter={StaticResource BoolToColorConverter}}"
+                       CornerRadius="14">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectGCashCommand}" />
+                    </Frame.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Frame Grid.Column="0" Padding="8,6"
+                               BackgroundColor="#007DFE" BorderColor="Transparent"
+                               CornerRadius="10" WidthRequest="40" HeightRequest="40"
+                               VerticalOptions="Center">
+                            <Label Text="G" FontSize="18" FontAttributes="Bold"
+                                   TextColor="White"
+                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Frame>
+                        <StackLayout Grid.Column="1" Spacing="2"
+                                     Margin="12,0,0,0" VerticalOptions="Center">
+                            <Label Text="GCash" FontSize="13" FontAttributes="Bold"
+                                   FontFamily="DCafé-eczar-semi-bold" TextColor="#F5EDD8" />
+                            <Label Text="Scan QR code to pay"
+                                   FontSize="11" TextColor="#7A6650" />
+                        </StackLayout>
+                        <Frame Grid.Column="2" Padding="0"
+                               BackgroundColor="{Binding IsGCashSelected, Converter={StaticResource BoolToColorConverter}}"
+                               BorderColor="Transparent"
+                               CornerRadius="12" WidthRequest="24" HeightRequest="24"
+                               VerticalOptions="Center"
+                               IsVisible="{Binding IsGCashSelected}">
+                            <Label Text="✓" FontSize="13" FontAttributes="Bold"
+                                   TextColor="#0D0705"
+                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Frame>
+                    </Grid>
+                </Frame>
+
+                <!-- GCash QR Code and Reference Number (visible only when GCash selected) -->
+                <Frame Padding="16" BackgroundColor="#1A0E08"
+                       BorderColor="#2E1C0E" CornerRadius="14"
+                       IsVisible="{Binding IsGCashSelected}">
+                    <StackLayout Spacing="12">
+                        <Label Text="Scan to Pay" FontSize="13" FontAttributes="Bold"
+                               FontFamily="DCafé-eczar-semi-bold" TextColor="#F5EDD8"
+                               HorizontalOptions="Center" />
+                        <Frame Padding="10" BackgroundColor="White"
+                               CornerRadius="10" HorizontalOptions="Center">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowQRFullscreenCommand}" />
+                            </Frame.GestureRecognizers>
+                            <Image Source="gcash_qr.png"
+                                   WidthRequest="180" HeightRequest="180"
+                                   Aspect="AspectFit" />
+                        </Frame>
+                        <Label Text="Tap QR to enlarge"
+                               FontSize="10" TextColor="#7A6650"
+                               HorizontalOptions="Center" />
+                        <Label Text="After payment, enter the reference number below:"
+                               FontSize="11" TextColor="#7A6650"
+                               HorizontalOptions="Center" />
+                        <Frame Padding="16,0" BackgroundColor="#2E1C0E"
+                               BorderColor="#4A3828" CornerRadius="10" HeightRequest="48">
+                            <Entry Placeholder="Reference Number" PlaceholderColor="#4A3828"
+                                   Text="{Binding ReferenceNumber}" TextColor="#F5EDD8"
+                                   FontFamily="DCafé-eczar-semi-bold" FontSize="14"
+                                   BackgroundColor="Transparent" VerticalOptions="Center"
+                                   Keyboard="Numeric" />
+                        </Frame>
+                    </StackLayout>
+                </Frame>
+
+                <!--
+                    FIX 5: Button now has BOTH:
+                      IsVisible="{Binding HasCartItems}"  — hides when cart is empty
+                      IsEnabled="{Binding CanPlaceOrder}" — disables until all fields filled
+
+                    Separating visibility (has items?) from enablement (all fields filled?)
+                    is the correct UX: user sees the button only when there's something
+                    to order, and the button becomes active only when the form is complete.
+                -->
+                <Button
+                    Text="Place Order"
+                    Command="{Binding PlaceOrderCommand}"
+                    IsVisible="{Binding HasCartItems}"
+                    IsEnabled="{Binding CanPlaceOrder}"
+                    BackgroundColor="#C9A96E"
+                    TextColor="#0D0705"
+                    FontAttributes="Bold"
+                    FontFamily="DCafé-eczar-semi-bold"
+                    FontSize="16"
+                    CornerRadius="14"
+                    HeightRequest="52"
+                    Margin="0,8,0,0" />
+
+                <ActivityIndicator
+                    IsRunning="{Binding IsBusy}"
+                    IsVisible="{Binding IsBusy}"
+                    Color="#C9A96E"
+                    HorizontalOptions="Center"
+                    Margin="0,4,0,0" />
+
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+
+    <!-- Fullscreen QR Overlay -->
+    <Grid IsVisible="{Binding IsQRFullscreen}"
+          BackgroundColor="#E6000000"
+          HorizontalOptions="Fill" VerticalOptions="Fill"
+          InputTransparent="False">
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding CloseQRFullscreenCommand}" />
+        </Grid.GestureRecognizers>
+
+        <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+            <Frame Padding="16" BackgroundColor="White"
+                   CornerRadius="16" HorizontalOptions="Center">
+                <Image Source="gcash_qr.png"
+                       WidthRequest="280" HeightRequest="280"
+                       Aspect="AspectFit" />
+            </Frame>
+
+            <Button Text="⬇ Download QR"
+                    Command="{Binding DownloadQRCommand}"
+                    BackgroundColor="#007DFE"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontFamily="DCafé-eczar-semi-bold"
+                    FontSize="14"
+                    CornerRadius="10"
+                    HeightRequest="44"
+                    WidthRequest="160"
+                    HorizontalOptions="Center" />
+
+            <Button Text="📷 Open Photos"
+                    Command="{Binding OpenPhotosCommand}"
+                    IsVisible="{Binding IsQRDownloaded}"
+                    BackgroundColor="#5DBB7A"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontFamily="DCafé-eczar-semi-bold"
+                    FontSize="14"
+                    CornerRadius="10"
+                    HeightRequest="44"
+                    WidthRequest="160"
+                    HorizontalOptions="Center" />
+
+            <Label Text="Tap anywhere to close"
+                   FontSize="12" TextColor="#AAAAAA"
+                   HorizontalOptions="Center" />
+        </StackLayout>
+    </Grid>
+    </Grid>
+</ContentPage>
