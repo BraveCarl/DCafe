@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using MauiStoreApp.Models;
+using DCafe.Models;
 using Newtonsoft.Json;
 
-namespace MauiStoreApp.Services
+namespace DCafe.Services
 {
     /// <summary>
     /// Manages and persists the list of recently viewed products.

@@ -1,6 +1,6 @@
-﻿using MauiStoreApp.Models;
+﻿using DCafe.Models;
 
-namespace MauiStoreApp.Services
+namespace DCafe.Services
 {
     /// <summary>
     /// Provides methods to interact with user data.

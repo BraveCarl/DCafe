@@ -2,10 +2,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MauiStoreApp.Models;
-using MauiStoreApp.Services;
+using DCafe.Models;
+using DCafe.Services;
 
-namespace MauiStoreApp.ViewModels
+namespace DCafe.ViewModels
 {
     public partial class CheckoutViewModel : BaseViewModel
     {

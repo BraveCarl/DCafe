@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace MauiStoreApp
+namespace DCafe
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

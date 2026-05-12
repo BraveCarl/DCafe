@@ -1,8 +1,8 @@
 ﻿using System.Text;
 using System.Text.Json;
-using MauiStoreApp.Models;
+using DCafe.Models;
 
-namespace MauiStoreApp.Services
+namespace DCafe.Services
 {
     public class OrderService
     {

@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace MauiStoreApp.Services
+namespace DCafe.Services
 {
     /// <summary>
     /// This class provides base functionality for other service classes.

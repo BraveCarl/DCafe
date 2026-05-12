@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace MauiStoreApp.ViewModels
+namespace DCafe.ViewModels
 {
     /// <summary>
     /// Provides a base implementation for view models.

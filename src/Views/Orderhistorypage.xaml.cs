@@ -1,6 +1,6 @@
-﻿using MauiStoreApp.ViewModels;
+﻿using DCafe.ViewModels;
 
-namespace MauiStoreApp.Views;
+namespace DCafe.Views;
 
 /// <summary>
 /// Code-behind for OrderHistoryPage.

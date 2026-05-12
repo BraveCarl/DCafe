@@ -1,10 +1,10 @@
 ﻿
-using MauiStoreApp.Models;
+using DCafe.Models;
 
 using System.Text;
 using System.Text.Json;
 
-namespace MauiStoreApp.Services
+namespace DCafe.Services
 {
 
 

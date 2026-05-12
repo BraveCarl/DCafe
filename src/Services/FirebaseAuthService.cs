@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 // CRASH FIX: Removed "using Firebase.Auth;" — this namespace does not exist
 // in a REST-only setup and causes a build failure.
 
-namespace MauiStoreApp.Services
+namespace DCafe.Services
 {
     public class FirebaseAuthService
     {

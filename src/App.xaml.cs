@@ -1,7 +1,7 @@
 ﻿using System;
-using MauiStoreApp.Services;
+using DCafe.Services;
 
-namespace MauiStoreApp
+namespace DCafe
 {
     public partial class App : Application
     {

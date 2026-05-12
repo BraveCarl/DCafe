@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MauiStoreApp.Services;
-using MauiStoreApp.Views;
+using DCafe.Services;
+using DCafe.Views;
 using System.Diagnostics;
 
-namespace MauiStoreApp.ViewModels
+namespace DCafe.ViewModels
 {
     public partial class LoginViewModel : BaseViewModel
     {

@@ -1,4 +1,4 @@
-﻿namespace MauiStoreApp.Models
+﻿namespace DCafe.Models
 {
     /// <summary>
     /// Immutable snapshot of one cart line at checkout time.

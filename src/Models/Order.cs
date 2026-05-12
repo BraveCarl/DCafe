@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace MauiStoreApp.Models
+namespace DCafe.Models
 {
     public class Order : INotifyPropertyChanged
     {

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace MauiStoreApp.Converters
+namespace DCafe.Converters
 {
     public class IntToBoolInvertedConverter : IValueConverter
     {

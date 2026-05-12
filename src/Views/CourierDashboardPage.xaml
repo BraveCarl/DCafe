@@ -7,16 +7,16 @@
       Tab 1 — My Deliveries     : Orders this courier has accepted and is progressing
 
     Binds to CourierDashboardViewModel.
-    Dark DCafé theme — matches the rest of MauiStoreApp.
+    Dark DCafé theme — matches the rest of DCafe.
 -->
 <ContentPage
-    x:Class="MauiStoreApp.Views.CourierDashboardPage"
+    x:Class="DCafe.Views.CourierDashboardPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
     xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Converters;assembly=CommunityToolkit.Maui"
-    xmlns:local="clr-namespace:MauiStoreApp.ViewModels"
-    xmlns:models="clr-namespace:MauiStoreApp.Models"
+    xmlns:local="clr-namespace:DCafe.ViewModels"
+    xmlns:models="clr-namespace:DCafe.Models"
     x:DataType="local:CourierDashboardViewModel"
     BackgroundColor="#0D0705"
     Shell.NavBarIsVisible="False">

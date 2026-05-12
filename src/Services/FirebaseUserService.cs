@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 
-namespace MauiStoreApp.Services
+namespace DCafe.Services
 {
     /// <summary>
     /// Stores and retrieves user profile data using the Firebase Realtime Database REST API.

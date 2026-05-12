@@ -1,7 +1,7 @@
-﻿using MauiStoreApp.Views;
+﻿using DCafe.Views;
 
 
-namespace MauiStoreApp
+namespace DCafe
 {
     public partial class AppShell : Shell
     {

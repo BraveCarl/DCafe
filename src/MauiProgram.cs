@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Maui;
-using MauiStoreApp.Services;
-using MauiStoreApp.ViewModels;
-using MauiStoreApp.Views;
+using DCafe.Services;
+using DCafe.ViewModels;
+using DCafe.Views;
 using Microsoft.Extensions.Logging;
 //using Plugin.Maui.Audio;
 
 
-namespace MauiStoreApp
+namespace DCafe
 {
     public static class MauiProgram
     {

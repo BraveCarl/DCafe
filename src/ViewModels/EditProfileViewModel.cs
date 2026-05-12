@@ -1,8 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MauiStoreApp.Services;
+using DCafe.Services;
 
-namespace MauiStoreApp.ViewModels
+namespace DCafe.ViewModels
 {
     public partial class EditProfileViewModel : BaseViewModel
     {

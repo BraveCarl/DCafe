@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MauiStoreApp.Models
+namespace DCafe.Models
 {
     /// <summary>
     /// Represents a product in the shopping cart, including the product ID and quantity.

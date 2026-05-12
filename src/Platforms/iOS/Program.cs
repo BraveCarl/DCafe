@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace MauiStoreApp
+namespace DCafe
 {
     public class Program
     {

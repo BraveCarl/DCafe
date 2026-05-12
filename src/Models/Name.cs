@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MauiStoreApp.Models
+namespace DCafe.Models
 {
     /// <summary>
     /// Represents a person's first and last name.

@@ -1,6 +1,6 @@
-﻿using MauiStoreApp.Models;
+﻿using DCafe.Models;
 
-namespace MauiStoreApp.Services
+namespace DCafe.Services
 {
     /// <summary>
     /// Temporarily holds a product that a guest user tried to add to cart

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace MauiStoreApp.Models
+namespace DCafe.Models
 {
     /// <summary>
     /// Represents the details of an item in the shopping cart, including the product and quantity.

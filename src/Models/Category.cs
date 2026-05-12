@@ -1,4 +1,4 @@
-﻿namespace MauiStoreApp.Models
+﻿namespace DCafe.Models
 {
     /// <summary>
     /// Represents a product category with a name and associated image.

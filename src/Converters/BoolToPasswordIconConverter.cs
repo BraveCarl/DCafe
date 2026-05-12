@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace MauiStoreApp.Converters
+namespace DCafe.Converters
 {
     /// <summary>
     /// Converts a boolean value to a password icon.

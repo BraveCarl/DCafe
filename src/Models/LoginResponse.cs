@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MauiStoreApp.Models
+namespace DCafe.Models
 {
     /// <summary>
     /// Represents the response from a login attempt, including an authentication token and user ID.

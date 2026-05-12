@@ -12,13 +12,13 @@
       and DeliveredAt timestamp in Firebase.
 -->
 <ContentPage
-    x:Class="MauiStoreApp.Views.OrderHistoryPage"
+    x:Class="DCafe.Views.OrderHistoryPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
     xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Converters;assembly=CommunityToolkit.Maui"
-    xmlns:local="clr-namespace:MauiStoreApp.ViewModels"
-    xmlns:models="clr-namespace:MauiStoreApp.Models"
+    xmlns:local="clr-namespace:DCafe.ViewModels"
+    xmlns:models="clr-namespace:DCafe.Models"
     x:DataType="local:OrderHistoryViewModel"
     BackgroundColor="#0D0705"
     Shell.NavBarIsVisible="False">

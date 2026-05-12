@@ -1,4 +1,4 @@
-namespace MauiStoreApp.Models
+namespace DCafe.Models
 {
     public class FirebaseUser
     {

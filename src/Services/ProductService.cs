@@ -1,7 +1,7 @@
 using System.Text.Json;
-using MauiStoreApp.Models;
+using DCafe.Models;
 
-namespace MauiStoreApp.Services
+namespace DCafe.Services
 {
     /// <summary>
     /// Provides services for managing and retrieving products.

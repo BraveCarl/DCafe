@@ -4,11 +4,11 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MauiStoreApp.Models;
-using MauiStoreApp.Services;
-using MauiStoreApp.Views;
+using DCafe.Models;
+using DCafe.Services;
+using DCafe.Views;
 
-namespace MauiStoreApp.ViewModels
+namespace DCafe.ViewModels
 {
     [QueryProperty(nameof(Product), "Product")]
     public partial class ProductDetailsViewModel : BaseViewModel

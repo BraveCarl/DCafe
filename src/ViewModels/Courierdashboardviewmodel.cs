@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MauiStoreApp.Models;
-using MauiStoreApp.Services;
+using DCafe.Models;
+using DCafe.Services;
 
-namespace MauiStoreApp.ViewModels
+namespace DCafe.ViewModels
 {
     /// <summary>
     /// Backs CourierDashboardPage.
