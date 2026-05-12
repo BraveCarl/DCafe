@@ -10,7 +10,7 @@ https://drive.google.com/file/d/1ViKwonI3NL6K-aIx15HaxpKlCxli33WD/view?usp=shari
 
 | Splash Screen | Home / Menu | Product Detail |
 |:---:|:---:|:---:|
-| ![Splash](src/Screenshots/splash.png) | ![Menu](src/Screenshots/menu.png) | ![Detail](src/Screenshots/productdetail.png) |
+| ![Splash](src/Screenshots/splash.jpg) | ![Menu](src/Screenshots/menu.jpg) | ![Detail](src/Screenshots/productdetail.jpg) |
 
 ---
 
